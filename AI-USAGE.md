@@ -42,3 +42,14 @@ The key principle used in the solution is:
 > AI decides and recommends; controlled automation validates and executes.
 
 Claude is therefore treated as an active participant in the onboarding workflow while MCP and n8n provide controlled execution and governance boundaries.
+
+## Where I Chose Not to Use AI
+
+I did not use AI to make final decisions about security controls,
+access governance, retry behavior, or enterprise authorization.
+
+These decisions were reviewed and defined explicitly because they
+affect system safety, permissions, and operational behavior.
+
+I also manually tested the Python prototype and reviewed its output
+instead of relying only on AI-generated code.
