@@ -25,19 +25,35 @@ When a new hire becomes active in Workday:
 9. Repeated failures create a FreshService ticket.
 10. Every action is recorded for auditability.
 
+
 ## Expected Business Improvement
 
-| Area | Current Process | Proposed Process |
-|---|---|---|
-| Trigger | Manual | Automatic |
-| Provisioning | Manual | Automated |
-| Decision Support | Human only | Claude + policy |
-| Multiple Systems | Manual coordination | MCP-controlled execution |
-| Failures | Manual follow-up | Retry + FreshService escalation |
-| Auditability | Distributed/manual | Central workflow audit |
-| Employee Experience | 3–5 business days | Target same-day provisioning |
+The solution is designed to reduce manual onboarding effort and improve the consistency of employee access.
 
-The exact production improvement would need to be measured through a pilot.
+The following should be treated as **pilot targets**, not guaranteed production results:
+
+| KPI | Current State | Pilot Target |
+|---|---|---|
+| Onboarding completion time | 3–5 business days | Same business day |
+| Manual provisioning effort | Multiple manual steps | Majority automated |
+| Provisioning failure handling | Manual follow-up | Automated retry + escalation |
+| Access errors | Tracked through incidents | Measure reduction in onboarding-related incidents |
+| Human approval | Manual decision-making | Only for sensitive/non-standard access |
+| Audit coverage | Distributed/manual | Every workflow action recorded |
+
+### How Success Would Be Measured
+
+During a pilot, we would compare:
+
+- Average onboarding completion time before vs. after automation
+- Number of manual IT provisioning actions
+- Percentage of onboarding workflows completed without intervention
+- Failure rate by target system
+- Number of incorrect or missing access incidents
+- Percentage of workflows requiring human approval
+- Mean time to resolve provisioning failures
+
+The pilot results would be used to refine the automation policies, retry strategy, and approval rules before broader rollout.
 
 ## Key Risks and Controls
 

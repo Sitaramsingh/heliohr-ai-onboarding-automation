@@ -403,3 +403,100 @@ This keeps the system AI-assisted rather than allowing the LLM to independently 
 14. If the operation continues to fail, n8n creates a FreshService ticket for IT intervention.
 
 15. Once all required actions are completed, the employee onboarding workflow is marked as successful.
+
+
+
+## 10. Claude Prompt and Structured Output
+
+Claude is used as an active onboarding decision layer. It receives validated employee information and approved access policies from n8n.
+
+### Prompt Design
+
+```text
+SYSTEM:
+
+You are an enterprise employee onboarding agent.
+
+Your responsibility is to create an onboarding action plan using only
+the employee information and approved access policies provided to you.
+
+Rules:
+1. Never invent permissions or access.
+2. Only select actions from the approved tool list.
+3. Standard access can be recommended automatically.
+4. Sensitive, privileged, or non-standard access must require human approval.
+5. Do not request or expose passwords, API keys, or other secrets.
+6. Return only the required structured JSON output.
+
+INPUT:
+
+Employee:
+- Employee ID
+- Name
+- Email
+- Department
+- Job Title
+- Manager
+- Start Date
+
+Approved Access Policies:
+- Department and role-based access rules
+- Standard onboarding tools
+- Sensitive access rules
+
+OUTPUT:
+
+Return a structured onboarding plan containing:
+- employee_id
+- actions
+- reason for each action
+- whether human approval is required
+- overall status
+```
+
+### Example Structured Output
+
+```json
+{
+  "employee_id": "EMP-1001",
+  "actions": [
+    {
+      "tool": "create_okta_user",
+      "reason": "Create enterprise identity",
+      "requires_approval": false
+    },
+    {
+      "tool": "create_google_workspace_user",
+      "reason": "Create corporate Google account",
+      "requires_approval": false
+    },
+    {
+      "tool": "add_slack_user",
+      "reason": "Provide standard collaboration access",
+      "requires_approval": false
+    },
+    {
+      "tool": "grant_jira_access",
+      "reason": "Engineering role requires Jira access",
+      "requires_approval": false
+    }
+  ],
+  "requires_human_approval": false,
+  "status": "READY_FOR_EXECUTION"
+}
+```
+
+### AI Output Validation
+
+The n8n workflow validates the Claude response before sending any action to MCP.
+
+Validation includes:
+
+- Required fields are present.
+- Tool names exist in the approved MCP allow-list.
+- Employee ID matches the onboarding request.
+- Required approval flags are present.
+- No unsupported permissions are requested.
+- Sensitive actions are routed to human approval.
+
+Only validated actions are passed to the MCP server for execution.
